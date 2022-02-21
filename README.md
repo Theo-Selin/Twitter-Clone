@@ -1,1 +1,1 @@
-# Spotifan is a social media platform for music-lovers
+# Spotifan is a twitter clone for music-lovers
