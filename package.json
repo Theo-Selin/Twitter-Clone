@@ -10,7 +10,10 @@
   "author": "Theo Selin",
   "license": "ISC",
   "dependencies": {
+    "body-parser": "^1.19.2",
     "express": "^4.17.3",
+    "mongodb": "^4.4.0",
+    "mongoose": "^6.2.2",
     "pug": "^3.0.2"
   }
 }
