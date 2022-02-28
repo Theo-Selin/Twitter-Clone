@@ -1,10 +1,13 @@
 // Shared javascript code over the site //
 
-$("#postTextarea").keyup(event => {
+// Enables button when textarea fills //
+$("#postTextarea, #commentTextarea").keyup(event => {
     const textbox = $(event.target)
     const value = textbox.val().trim()
 
-    const submitButton = $("#submitPostButton")
+    const isPopup = textbox.parents(".modal").length == 1
+
+    const submitButton = isPopup ? $("#submitCommentButton") : $("#submitPostButton")
 
     if(submitButton.length == 0) return alert("No submit button found")
 
@@ -16,21 +19,46 @@ $("#postTextarea").keyup(event => {
     }
 })
 
-$("#submitPostButton").click(event => {
+$("#submitPostButton, #submitCommentButton").click(event => {
     const button = $(event.target)
-    const textbox = $("#postTextarea")
+
+    const isPopup = button.parents(".modal").length == 1
+
+    const textbox = isPopup ? $("#commentTextarea") : $("#postTextarea")
 
     const data = {
         content: textbox.val()
     }
 
+    if(isPopup) {
+        const id = button.data().id
+        if(id == null) return alert("Id is null")
+        data.replyTo = id
+    }
+
     $.post("/api/posts", data, postData => {
-        const html = createPostHtml(postData)
-        $(".postsContainer").prepend(html)
-        textbox.val("")
-        button.prop("disabled", true)
+        if(postData.replyTo) {
+            location.reload()
+        } else {
+            const html = createPostHtml(postData)
+            $(".postsContainer").prepend(html)
+            textbox.val("")
+            button.prop("disabled", true)
+        }
     })
 })
+
+$("#commentModal").on("show.bs.modal", (event) => {
+    const button = $(event.relatedTarget)
+    const postId = getIdFromElement(button)
+    $("#submitCommentButton").data("id", postId)
+
+    $.get(`/api/posts/${postId}`, results => {
+        renderPosts(results.postData, $("#originalPostContainer"))
+    })
+})
+
+$("#commentModal").on("hidden.bs.modal", () => $("#originalPostContainer").html(""))
 
 $(document).on("click", ".likeButton", (event) => {
     const button = $(event.target)
@@ -74,6 +102,15 @@ $(document).on("click", ".shareButton", (event) => {
     })
 })
 
+$(document).on("click", ".post", (event) => {
+    const postCard = $(event.target)
+    const postId = getIdFromElement(postCard)
+
+    if(postId !== undefined && !postCard.is("button")) {
+        window.location.href = `/posts/${postId}`
+    }
+})
+
 function getIdFromElement(element) {
     const isRoot = element.hasClass("post")
     const rootElement = isRoot == true ? element : element.closest(".post")
@@ -93,8 +130,6 @@ function createPostHtml(postData) {
     const sharedBy = isShared ? postData.postedBy.username : null
     postData = isShared ? postData.shareData : postData
 
-    console.log(isShared)
-
     if(postedBy._id === undefined) {
         return console.log("User object not populated")
     }
@@ -110,6 +145,22 @@ function createPostHtml(postData) {
             <i class="fa-solid fa-retweet"></i>
             Shared by <a href="/profile/${sharedBy}">♪${sharedBy}</a>
         </span>`
+    }
+
+    let replyIndicator = ""
+    if(postData.replyTo && postData.replyTo._id) {
+
+        if(!postData.replyTo._id) {
+            return alert("Reply to is not populated")
+        } else if(!postData.replyTo.postedBy._id){
+            return alert("PostedBy is not populated")
+        }
+
+        const replyToUsername = postData.replyTo.postedBy.username
+        replyIndicator = `
+            <div class="replyIndicator">
+                Replying to <a href="/profile/${replyToUsername}">♪${replyToUsername}<a>
+            </div>`
     }
 
     return `<div class="post" data-id='${postData._id}'>
@@ -129,6 +180,8 @@ function createPostHtml(postData) {
                             <a class="username" href="/profile/${postedBy.username}">♪${postedBy.username}</a>
                             <span class="date">${time}</span>
                         </div>
+
+                        ${replyIndicator}
 
                         <div class="postBody">
                             <span>${postData.content}</span>
@@ -197,4 +250,38 @@ function timeDifference(current, previous) {
     else {
         return Math.round(elapsed/msPerYear ) + ' years ago' 
     }
+}
+
+function renderPosts(results, container) {
+    container.html("")
+
+    if(!Array.isArray(results)) {
+        results = [results]
+    }
+
+    results.forEach(result => {
+        const html = createPostHtml(result)
+        container.append(html)
+    })
+
+    if(results.length == 0) {
+        container.append("<span class='noResults'>Nothing to show.</span>")
+    }
+}
+
+function renderPostsWithReplies(results, container) {
+    container.html("")
+
+    if(results.replyTo !== undefined && results.replyTo._id !== undefined) {
+        const html = createPostHtml(results.replyTo)
+        container.append(html)
+    }
+
+    const mainPostHtml = createPostHtml(results.postData)
+    container.append(mainPostHtml)
+
+    results.replies.forEach(result => {
+        const html = createPostHtml(result)
+        container.append(html)
+    })
 }

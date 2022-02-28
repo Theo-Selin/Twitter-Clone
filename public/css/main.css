@@ -98,11 +98,60 @@ button {
 }
 
 .postFormContainer {
+    height: 150px;
     display: flex;
     padding: var(--spacing);
-    border-bottom: 10px solid var(--spotify-gray);
+    border-bottom: 5px solid var(--spotify-gray);
     flex-shrink: 0;
+}
+
+.modal {
+    border: none;
+}
+
+.modal-header {
+    border-color: var(--spotify-gray);
+}
+
+.modal-footer {
+    border-color: var(--spotify-gray);
+}
+
+.modal .post {
+    padding: 0 0 var(--spacing) 0;
+}
+
+.modal-content {
     background-color: var(--spotify-dark-gray);
+    color: white;
+}
+
+.modal .postFormContainer {
+    border: none;
+    padding: 0;
+    padding-top: var(--spacing)
+}
+
+#submitCommentButton {
+    width: 150px;
+    border: none;
+    border-radius: 30px;;
+    background-color: var(--spotify-green);
+}
+
+#submitCommentButton:hover {
+    opacity: 60%;
+}
+
+#closeModalButton {
+    width: 70px;
+    border: none;
+    border-radius: 30px;;
+    background-color: var(--spotify-gray);
+}
+
+#closeModalButton:hover {
+    opacity: 60%;
 }
 
 .userImageContainer {
@@ -227,4 +276,18 @@ button span {
 
 .postActionContainer a:hover {
     color: var(--spotify-green)
+}
+
+.replyIndicator {
+    font-size: 13px;
+    color: white;
+    margin-bottom: 5px;
+}
+
+.replyIndicator a {
+    color: var(--spotify-gray);
+}
+
+.replyIndicator a:hover {
+    color: var(--spotify-green);
 }

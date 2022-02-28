@@ -7,7 +7,7 @@
 }
 
 body {
-    background-color: var(--spotify-dark-gray);
+    background-color: var(--spotify-black);
 }
 
 .wrapper {
@@ -17,16 +17,17 @@ body {
 }
 
 .loginContainer {
-    padding: 20px;
+    padding: 50px;
     width: 80%;
     max-width: 500px;
     border: 1px solid var(--spotify-black);
-    background-color: var(--spotify-black);
+    border-radius: 10px;
+    background-color: var(--spotify-dark-gray);
     color: var(--spotify-bright-gray);
     text-align: center;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.3);
-    -webkit-box-shadow: 0 1px 4px rgba(0,0,0,0.3);
-    -moz-box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+    -webkit-box-shadow: 0 1px 4px rgba(0,0,0,0.4);
+    -moz-box-shadow: 0 1px 4px rgba(0,0,0,0.4);
 }
 
 form {
@@ -37,17 +38,23 @@ form {
 input[type="text"],
 input[type="email"],
 input[type="password"] {
+    color: var(--spotify-dark-gray);
+    text-align: center;
     margin-bottom: 20px;
     padding: 5px 10px;
-    border-radius: 2px;
-    border: 1px solid var(--spotify-dark-gray);
-    background-color: var(--spotify-dark-gray);
+    border-radius: 20px;
+    border: none;
+    background-color: white;
 }
 
 input[type="submit"] {
+    width: 50%;
+    height: 30px;
+    -ms-transform: translateX(50%);
+    transform: translateX(50%);
     background-color: var(--spotify-green);
     color: white;
     border: none;
-    border-radius: 2px;
+    border-radius: 20px;
     margin-bottom: 10px;
 }

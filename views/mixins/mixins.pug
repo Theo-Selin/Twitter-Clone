@@ -13,10 +13,15 @@ mixin createCommentModal(userLoggedIn)
             .modal-content
                 .modal-header
                     h5#commentModalLabel.modal-title Comment
-                    button.close(type="button", data-dismiss="modal", aria-label="Close")
+                    button.close(type="button", data-bs-dismiss="modal", aria-label="Close")
                         span(aria-hidden="true") &times;
                 .modal-body
-                    | ...
+                    #originalPostContainer
+                    .postFormContainer
+                        .userImageContainer
+                            img(src=userLoggedIn.profilePicture, alt="Profile picture")
+                        .textareaContainer
+                            textarea#commentTextarea(placeholder="What's jammin'?")
                 .modal-footer
-                    button.btn.btn-secondary(type="button", data-dismiss="modal") Close
+                    button#closeModalButton.btn.btn-secondary(type="button", data-bs-dismiss="modal") Close
                     button#submitCommentButton.btn.btn-primary(type="button", disabled="") Send
