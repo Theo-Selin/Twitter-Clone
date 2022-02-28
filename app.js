@@ -23,19 +23,28 @@ app.use(session({
     saveUninitialized: false
 }))
 
-// Routes //
+// Page Routes //
 const loginRoute = require("./routes/loginRoutes")
 const registerRoute = require("./routes/registerRoutes")
+const logoutRoute = require("./routes/logoutRoutes")
 
 app.use("/login", loginRoute)
 app.use("/register", registerRoute)
+app.use("/logout", logoutRoute)
+
+// Api Routes //
+const postsRoute = require("./routes/api/posts")
+
+app.use("/api/posts", postsRoute)
+
 
 // Render home-page //
 app.get("/", middleware.requireLogin, (req, res, next) => {
 
     const payload = {
         pageTitle: "Home",
-        userLoggedIn: req.session.user
+        userLoggedIn: req.session.user,
+        userLoggedInJs: JSON.stringify(req.session.user)
     }
 
     res.status(200).render("home", payload)

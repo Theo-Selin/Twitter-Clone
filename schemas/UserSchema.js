@@ -32,7 +32,15 @@ const UserSchema = new Schema({
     profilePicture: {
         type: String,
         default: "/images/profilePicture.png"
-    }
+    },
+    likes: [{
+        type: Schema.Types.ObjectId,
+        ref: "Post"
+    }],
+    shares: [{
+        type: Schema.Types.ObjectId,
+        ref: "Post"
+    }]
 }, { timestamps: true })
 
 const User = mongoose.model("User", UserSchema)

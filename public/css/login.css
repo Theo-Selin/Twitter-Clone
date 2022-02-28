@@ -1,5 +1,13 @@
+:root {
+    --spotify-green: #1DB954;
+    --spotify-black: #121212;
+    --spotify-dark-gray: #212121;
+    --spotify-gray: #535353;
+    --spotify-bright-gray: #b3b3b3;
+}
+
 body {
-    background-color: #0099ff;
+    background-color: var(--spotify-dark-gray);
 }
 
 .wrapper {
@@ -12,8 +20,9 @@ body {
     padding: 20px;
     width: 80%;
     max-width: 500px;
-    border: 1px solid #dedede;
-    background-color: #fff;
+    border: 1px solid var(--spotify-black);
+    background-color: var(--spotify-black);
+    color: var(--spotify-bright-gray);
     text-align: center;
     box-shadow: 0 1px 4px rgba(0,0,0,0.3);
     -webkit-box-shadow: 0 1px 4px rgba(0,0,0,0.3);
@@ -31,13 +40,13 @@ input[type="password"] {
     margin-bottom: 20px;
     padding: 5px 10px;
     border-radius: 2px;
-    border: 1px solid #dedede;
-    background-color: #f2f2f2;
+    border: 1px solid var(--spotify-dark-gray);
+    background-color: var(--spotify-dark-gray);
 }
 
 input[type="submit"] {
-    background-color: #0099ff;
-    color: #fff;
+    background-color: var(--spotify-green);
+    color: white;
     border: none;
     border-radius: 2px;
     margin-bottom: 10px;
