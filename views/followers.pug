@@ -1,0 +1,18 @@
+extends layouts/main-layout.pug 
+
+block content
+    if !profileUser
+        span.errorMessage There is no user by this name
+    else
+        script.
+            const profileUserId = "!{profileUser._id}"
+            const selectedTab = "!{selectedTab}"
+        
+        .tabsContainer
+            +createProfileTab("Remembering", `/profile/${profileUser.username}/following`, selectedTab != "followers")
+            +createProfileTab("Listeners", `/profile/${profileUser.username}/followers`, selectedTab = "followers")
+
+        .resultsContainer
+
+block scripts
+    script(src="/javascript/followers.js") 

@@ -10,7 +10,37 @@ app.use(bodyParser.urlencoded({extended: false}))
 
 // Render posts //
 router.get("/", async (req, res, next) => {
-    const results = await getPosts({})
+
+    const searchObject = req.query
+
+    if(searchObject.isReply !== undefined) {
+        let isReply = searchObject.isReply == "true"
+        searchObject.replyTo = { $exists: isReply }
+        delete searchObject.isReply
+    }
+
+    if(searchObject.followingOnly !== undefined) {
+        let followingOnly = searchObject.followingOnly == "true"
+
+        if(followingOnly) {
+            const objectIds = []
+
+            if(!req.session.user.following) {
+                req.session.user.following = []
+            }
+
+            req.session.user.following.forEach(user => {
+                objectIds.push(user)
+            })
+
+            objectIds.push(req.session.user._id)
+            searchObject.postedBy = { $in: objectIds }
+        }
+
+        delete searchObject.followingOnly
+    }
+
+    const results = await getPosts(searchObject)
     res.status(200).send(results)
 })
 
@@ -123,6 +153,15 @@ router.post("/:id/share", async (req, res, next) => {
     })
 
     res.status(200).send(post)
+})
+
+router.delete("/:id", (req, res, next) => {
+    Post.findByIdAndDelete(req.params.id)
+    .then(() => res.sendStatus(202))
+    .catch(error => {
+        console.log(error)
+        res.sendStatus(400)
+    })
 })
 
 async function getPosts(filter) {

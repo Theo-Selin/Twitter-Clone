@@ -8,13 +8,12 @@ mixin createPostForm(userLoggedIn)
                 button#submitPostButton(disabled="") Post
 
 mixin createCommentModal(userLoggedIn)
-    #commentModal.modal.fade(tabindex="-1", role="dialog", aria-labelledby="commentModalLabel", aria-hidden="true")
-        .modal-dialog(role="document")
+    #commentModal.modal.fade(tabindex="-1", aria-labelledby="commentModalLabel", aria-hidden="true")
+        .modal-dialog
             .modal-content
                 .modal-header
                     h5#commentModalLabel.modal-title Comment
-                    button.close(type="button", data-bs-dismiss="modal", aria-label="Close")
-                        span(aria-hidden="true") &times;
+                    button.btn-close(type="button", data-bs-dismiss="modal", aria-label="Close")
                 .modal-body
                     #originalPostContainer
                     .postFormContainer
@@ -25,3 +24,46 @@ mixin createCommentModal(userLoggedIn)
                 .modal-footer
                     button#closeModalButton.btn.btn-secondary(type="button", data-bs-dismiss="modal") Close
                     button#submitCommentButton.btn.btn-primary(type="button", disabled="") Send
+
+mixin createDeletePostModal()
+    #deletePostModal.modal.fade(tabindex="-1", aria-labelledby="deletePostModalLabel", aria-hidden="true")
+        .modal-dialog
+            .modal-content
+                .modal-header
+                    h5#deletePostModalLabel.modal-title Delete the post?
+                    button.btn-close(data-bs-dismiss="modal", aria-label="Close")
+                .modal-body
+                    p You won't be able to delete this
+                .modal-footer
+                    button#closeModalButton.btn.btn-secondary(data-bs-dismiss="modal") Close
+                    button#deletePostButton.btn.btn-primary Delete
+
+mixin createPostModals(userLoggedIn)
+    +createCommentModal(userLoggedIn)
+    +createDeletePostModal()
+
+mixin createFollowButton(user, isFollowing)
+    - text = isFollowing ? "Forget" : "Remember"
+    - buttonClass = isFollowing ? "followButton following" : "followButton"
+    button(class=buttonClass, data-user=user._id) #{text}
+
+mixin createProfileTab(tabName, href, isSelected)
+    - className = isSelected ? "tab active" : "tab"
+    a(href=href, class=className)
+        span #{tabName}
+
+mixin createImageUploadModal()
+    #imageUploadModal.modal.fade(tabindex="-1", aria-labelledby="imageUploadModalLabel", aria-hidden="true")
+        .modal-dialog
+            .modal-content
+                .modal-header
+                    h5#imageUploadModalLabel.modal-title Upload new profile picture
+                    button.btn-close(data-bs-dismiss="modal", aria-label="Close")
+                .modal-body
+                    input#filePhoto(type="file", name="filePhoto")
+
+                    .imagePreviewContainer
+                        img#imagePreview
+                .modal-footer
+                    button#closeModalButton.btn.btn-secondary(data-bs-dismiss="modal") Cancel
+                    button#imageUploadButton.btn.btn-primary Upload

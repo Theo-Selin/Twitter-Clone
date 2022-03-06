@@ -1,5 +1,8 @@
 // Shared javascript code over the site //
 
+// Global code //
+let cropper
+
 // Enables button when textarea fills //
 $("#postTextarea, #commentTextarea").keyup(event => {
     const textbox = $(event.target)
@@ -60,6 +63,44 @@ $("#commentModal").on("show.bs.modal", (event) => {
 
 $("#commentModal").on("hidden.bs.modal", () => $("#originalPostContainer").html(""))
 
+$("#deletePostModal").on("show.bs.modal", (event) => {
+    const button = $(event.relatedTarget)
+    const postId = getIdFromElement(button)
+    $("#deletePostButton").data("id", postId)
+})
+
+$("#deletePostButton").click((event) => {
+    const postId = $(event.target).data("id")
+
+    $.ajax({
+        url: `/api/posts/${postId}`,
+        type: "DELETE",
+        success: () => {
+            location.reload()
+        }
+    })
+
+})
+
+$("#filePhoto").change(function() {
+    if(this.files && this.files[0]) {
+        const reader = new FileReader()
+        reader.onload = (event) => {
+            var image = document.getElementById("imagePreview")
+            image.src = event.target.result
+            if(cropper !== undefined) {
+                cropper.destroy()
+            }
+
+            cropper = new Cropper(image, {
+                aspectRatio: 1/1,
+                background: false
+            })
+        }
+        reader.readAsDataURL(this.files[0])
+    }
+})
+
 $(document).on("click", ".likeButton", (event) => {
     const button = $(event.target)
     const postId = getIdFromElement(button)
@@ -111,6 +152,42 @@ $(document).on("click", ".post", (event) => {
     }
 })
 
+$(document).on("click", ".followButton", (event) => {
+    const button = $(event.target)
+    const userId = button.data().user
+
+    $.ajax({
+        url: `/api/users/${userId}/follow`,
+        type: "PUT",
+        success: (data, status, check) => {
+
+            if(check.status == 404) {
+                alert("We can't seem to find this user anymore")
+                return
+            }
+
+            let adjustment = 1
+
+            if(data.following && data.following.includes(userId)) {
+                button.addClass("following")
+                button.text("Forget")
+            } else {
+                button.removeClass("following")
+                button.text("Remember")
+                adjustment = -1
+            }
+
+            const followersLabel = $("#followersValue")
+            if(followersLabel.lenght != 0) {
+                let followersText = followersLabel.text()
+                followersText = parseInt(followersText)
+                followersLabel.text(followersText + adjustment)
+            }
+        }
+    })
+
+})
+
 function getIdFromElement(element) {
     const isRoot = element.hasClass("post")
     const rootElement = isRoot == true ? element : element.closest(".post")
@@ -121,7 +198,7 @@ function getIdFromElement(element) {
     return postId
 }
 
-function createPostHtml(postData) {
+function createPostHtml(postData, postFocus = false) {
 
     if(postData == null) return alert("post object is null")
 
@@ -138,6 +215,7 @@ function createPostHtml(postData) {
     const time = timeDifference(new Date(), new Date(postData.createdAt))
     const likeButtonActiveClass = postData.likes.includes(userLoggedIn._id) ? "active" : ""
     const shareButtonActiveClass = postData.shareUsers.includes(userLoggedIn._id) ? "active" : ""
+    const postFocusClass = postFocus ? "postFocus" : ""
 
     let sharedText = ""
     if(isShared) {
@@ -163,7 +241,15 @@ function createPostHtml(postData) {
             </div>`
     }
 
-    return `<div class="post" data-id='${postData._id}'>
+    let buttons = ""
+    if(postData.postedBy._id == userLoggedIn._id) {
+        buttons = `
+            <button class="deletePostMark" data-id="${postData._id}" data-bs-toggle="modal" data-bs-target="#deletePostModal">
+                <i class="fa-solid fa-xmark"></i>
+            </button>`
+    }
+
+    return `<div class="post ${postFocusClass}" data-id='${postData._id}'>
                 <div class="postActionContainer">
                     ${sharedText}
                 </div>
@@ -179,6 +265,7 @@ function createPostHtml(postData) {
                             <span class="sender">${sender}</span>
                             <a class="username" href="/profile/${postedBy.username}">♪${postedBy.username}</a>
                             <span class="date">${time}</span>
+                            ${buttons}
                         </div>
 
                         ${replyIndicator}
@@ -188,7 +275,7 @@ function createPostHtml(postData) {
                         </div>
 
                         <div class="postFooter">
-                            <div class="postButtonContainer comment">
+                            <div class="postButtonContainer" comment>
                                 <button data-bs-toggle="modal" data-bs-target="#commentModal">
                                     <i class="fa-regular fa-comment"></i>
                                 </button>
@@ -277,7 +364,7 @@ function renderPostsWithReplies(results, container) {
         container.append(html)
     }
 
-    const mainPostHtml = createPostHtml(results.postData)
+    const mainPostHtml = createPostHtml(results.postData, true)
     container.append(mainPostHtml)
 
     results.replies.forEach(result => {

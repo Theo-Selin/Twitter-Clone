@@ -11,6 +11,8 @@
     background-color: var(--spotify-dark-gray);
 }
 
+
+
 * {
     outline: none !important;
 }
@@ -45,6 +47,7 @@ nav {
 }
 
 nav a {
+    opacity: 60%;
     color: var(--spotify-gray);
     padding: 10px;
     font-size: 30px;
@@ -56,17 +59,22 @@ nav a {
 }
 
 nav a:hover {
-    background-color: var(--spotify-green);
-    color: white;
-    border-radius: 50%;
+    opacity: 100%;
+    color: var(--spotify-gray);
 }
 
 nav a.logo {
+    opacity: 80%;
     color: var(--spotify-green);
 }
 
 nav a.logo:hover {
-    color: white;
+    opacity: 100%;
+    color: var(--spotify-green)
+}
+
+.wrapper > .row {
+    margin: 0;
 }
 
 button {
@@ -135,7 +143,7 @@ button {
 #submitCommentButton {
     width: 150px;
     border: none;
-    border-radius: 30px;;
+    border-radius: 30px;
     background-color: var(--spotify-green);
 }
 
@@ -146,7 +154,7 @@ button {
 #closeModalButton {
     width: 70px;
     border: none;
-    border-radius: 30px;;
+    border-radius: 30px;
     background-color: var(--spotify-gray);
 }
 
@@ -157,7 +165,6 @@ button {
 .userImageContainer {
     width: 50px;
     height: 50px;
-
 }
 
 .userImageContainer img {
@@ -180,7 +187,7 @@ button {
     background-color: var(--spotify-dark-gray);
 }
 
-#submitPostButton {
+#submitPostButton, #deletePostButton {
     background-color: var(--spotify-green);
     color: white;
     border: none;
@@ -188,17 +195,39 @@ button {
     padding: 7px 15px;
 }
 
+#deletePostMark {
+    color: white;
+    font-size: 10px;
+}
+
 #submitPostButton:disabled {
     background-color: var(--spotify-gray);
 }
 
 .post {
+    opacity: 70%;
     display: flex;
     flex-direction: column;
     padding: var(--spacing);
     cursor: pointer;
     border-bottom: 1px solid var(--spotify-gray);
     flex-shrink: 0;
+}
+
+.post:hover {
+    opacity: 100%;
+    border-color: var(--spotify-gray);
+}
+
+.post.postFocus {
+    opacity: 100%;
+    background-color: var(--spotify-dark-gray);
+    border: 1px solid var(--spotify-bright-gray);
+}
+
+.post.postFocus .postBody,
+.post.postFocus .postFooter {
+    font-size: 18px;
 }
 
 button i,
@@ -222,7 +251,14 @@ button span {
     color: var(--spotify-bright-gray);
 }
 
-.date {
+.postContentContainer .postHeader {
+    display: flex;
+}
+
+.postContentContainer .date {
+    flex: 1;
+    text-align: right;
+    margin-right: 10px;
     color: var(--spotify-bright-gray);
     font-weight: lighter;
     padding-left: 5px;
@@ -230,15 +266,21 @@ button span {
 
 .username {
     color:var(--spotify-gray);
-    padding-left: 5px;
 }
 
 .username:hover {
+    cursor: pointer;
     color:var(--spotify-green);
+}
+
+.displayName {
+    font-size: 25px;
+    flex: 1;
 }
 
 .sender {
     color: white;
+    margin-right: 10px;
 }
 
 .postFooter {
@@ -290,4 +332,181 @@ button span {
 
 .replyIndicator a:hover {
     color: var(--spotify-green);
+}
+
+.errorMessage {
+    color: var(--spotify-bright-gray);
+    padding: var(--spacing);
+}
+
+.profileHeaderContainer .coverPhotoContainer {
+    height: 180px;
+    background-color: var(--spotify-green);
+    position: relative;
+}
+
+.profileHeaderContainer .userImageContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    height: 132px;
+    width: 132px;
+    margin-left: var(--spacing);
+    position: absolute;
+    bottom: -66px;
+}
+
+.profileHeaderContainer .userImageContainer img{
+    border: 4px solid var(--spotify-dark-gray);
+}
+
+.profileHeaderContainer .profileButtonsContainer {
+    text-align: right;
+    padding: var(--spacing);
+    min-height: 66px;
+}
+
+.profileButton {
+    border: 1px solid var(--spotify-gray);
+    color: var(--spotify-gray);
+    font-size: 20px;
+    font-weight: bold;
+    padding: 5px 15px;
+    border-radius: 60px;
+    display: inline-block;
+    margin-left: var(--spacing);
+}
+
+.followButton.following {
+    background-color: var(--spotify-green);
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    padding: 5px 15px;
+    border-radius: 60px;
+    display: inline-block;
+    margin-left: var(--spacing);
+}
+
+.profileButton:hover {
+    color: white;
+    background-color: var(--spotify-green);
+}
+
+.followButton {
+    opacity: 90%;
+    background-color: var(--spotify-green);
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    padding: 5px 15px;
+    border-radius: 60px;
+    display: inline-block;
+    margin-left: var(--spacing);
+}
+
+.followButton.following {
+    opacity: 90%;
+    background-color: var(--red);
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    padding: 5px 15px;
+    border-radius: 60px;
+    display: inline-block;
+    margin-left: var(--spacing);
+}
+
+.followButton:hover {
+    opacity: 100%;
+}
+
+.profileHeaderContainer .userDetailsContainer {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    padding: 0 var(--spacing);
+    color: var(--spotify-bright-gray);
+}
+
+.followersContainer .value {
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+.followersContainer a:hover {
+    border-bottom: 1px solid var(--spotify-bright-gray);
+}
+
+.followingContainer .value {
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+.followingContainer a:hover {
+    border-bottom: 1px solid var(--spotify-bright-gray);
+}
+
+.tabsContainer {
+    display: flex;
+    border-bottom: 1px solid var(--spotify-gray);
+    flex-shrink: 0;
+}
+
+.tab {
+    flex: 1;
+    height: 52px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--spotify-bright-gray);
+    font-weight: bold;
+}
+
+.tab.active {
+    color: var(--spotify-green);
+    border-bottom: 2px solid var(--spotify-green);
+}
+
+.tab:hover {
+    color: var(--spotify-green);
+}
+
+.noResults {
+    color: var(--spotify-gray);
+    padding-left: 10px;
+}
+
+.resultsContainer {
+    display: flex;
+    flex-direction: column;
+}
+
+.resultsContainer .user {
+    padding: var(--spacing);
+    display: flex;
+    border-bottom: 1px solid var(--spotify-gray)
+}
+
+.user .userDetailsContainer {
+    flex: 1;
+    padding: 0 var(--spacing);
+}
+
+.profilePictureButton {
+    position: absolute;
+    font-size: 40px;
+    color: rgba(0, 0, 0, 0.4);
+    display: none;
+}
+
+.userImageContainer:hover .profilePictureButton {
+    display: block;
+}
+
+#imagePreview {
+    display: block; 
+    width: 100%;
+    max-width: 100%;
 }

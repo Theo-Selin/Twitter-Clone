@@ -1,0 +1,59 @@
+extends layouts/main-layout.pug 
+
+block content
+    if !profileUser
+        span.errorMessage There is no user by this name
+    else
+        script.
+            const profileUserId = "!{profileUser._id}"
+            const selectedTab = "!{selectedTab}"
+
+        - followersCount = profileUser.followers.length
+        - followingCount = profileUser.following.length
+
+
+        .profileHeaderContainer
+            .coverPhotoContainer
+                .userImageContainer 
+                    img(src=profileUser.profilePicture, alt="User profile picture")
+
+                    if profileUser._id == userLoggedIn._id
+                        button.profilePictureButton(data-bs-toggle="modal", data-bs-target="#imageUploadModal")
+                            i.fa-solid.fa-camera
+            .profileButtonsContainer
+                if profileUser._id != userLoggedIn._id
+                    a.profileButton(href=`/messages/${profileUser._id}`)
+                        i.fa-solid.fa-envelope
+                    
+                    - const profileUserId = profileUser._id.toString()
+                    - if(userLoggedIn.following && userLoggedIn.following.includes(profileUserId))
+                        +createFollowButton(profileUser, true)
+                    - else
+                        +createFollowButton(profileUser, false)
+
+
+
+            .userDetailsContainer
+                span.displayName #{profileUser.firstName} #{profileUser.lastName}
+                span.username ♪#{profileUser.username}
+                span.description #{profileUser.description}
+
+                .followersContainer
+                    a(href=`/profile/${profileUser.username}/followers`)
+                        span#followersValue.value #{followersCount}
+                        span Followers
+
+                .followingContainer
+                    a(href=`/profile/${profileUser.username}/following`)
+                        span#followersValue.value #{followingCount}
+                        span Following
+        .tabsContainer
+            +createProfileTab("Posts", `/profile/${profileUser.username}`, selectedTab != "replies")
+            +createProfileTab("Replies", `/profile/${profileUser.username}/replies`, selectedTab == "replies")
+        .postsContainer
+
+        +createPostModals(userLoggedIn)
+        +createImageUploadModal()
+
+block scripts
+    script(src="/javascript/profile.js") 
