@@ -12,7 +12,28 @@ const { send } = require("express/lib/response")
 
 app.use(bodyParser.urlencoded({extended: false}))
 
-// Render posts //
+// Routes //
+router.get("/", async (req, res, next) => {
+    let searchObject = req.query
+
+    if(req.query.search !== undefined) {
+        searchObject = {
+            $or: [
+                { firstName: { $regex: req.query.search, $options: "i" }},
+                { lastName: { $regex: req.query.search, $options: "i" }},
+                { username: { $regex: req.query.search, $options: "i" }},
+            ]
+        }
+    }
+
+    User.find(searchObject)
+    .then(results => res.status(200).send(results))
+    .catch(error => {
+        console.log(error)
+        res.sendStatus(400)
+    })
+})
+
 router.put("/:userId/follow", async (req, res, next) => {
     const userId = req.params.userId
     const user = await User.findById(userId)

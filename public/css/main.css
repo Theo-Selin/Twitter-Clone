@@ -543,3 +543,25 @@ button span {
 .pinnedPostContainer {
     border-bottom: 5px solid var(--spotify-gray);
 }
+
+.searchBarContainer {
+    position: relative;
+    color: var(--spotify-gray);
+    padding: 10px var(--spacing);
+}
+
+.searchBarContainer i {
+    position: absolute;
+    top: 20px;
+    left: 28px;
+}
+
+.searchBarContainer #searchInput {
+    height: 36px;
+    width: 100%;
+    padding: 5px 15px 5px 40px;
+    border-radius: 50px;
+    background-color: var(--spotify-black);
+    border: none;
+    color: var(--spotify-bright-gray)
+}

@@ -8,7 +8,7 @@ const { send } = require("express/lib/response")
 
 app.use(bodyParser.urlencoded({extended: false}))
 
-// Render posts //
+// Routes //
 router.get("/", async (req, res, next) => {
 
     const searchObject = req.query
@@ -17,6 +17,11 @@ router.get("/", async (req, res, next) => {
         let isReply = searchObject.isReply == "true"
         searchObject.replyTo = { $exists: isReply }
         delete searchObject.isReply
+    }
+
+    if(searchObject.search !== undefined) {
+        searchObject.content = { $regex: searchObject.search, $options: "i" }
+        delete searchObject.search
     }
 
     if(searchObject.followingOnly !== undefined) {
