@@ -541,5 +541,5 @@ button span {
 }
 
 .pinnedPostContainer {
-    border-bottom: 10px solid var(--spotify-gray);
+    border-bottom: 5px solid var(--spotify-gray);
 }

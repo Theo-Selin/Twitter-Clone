@@ -1,0 +1,13 @@
+extends layouts/main-layout.pug 
+
+block content
+    .tabsContainer
+        +createProfileTab("Posts", "/search/posts", selectedTab != "users")
+        +createProfileTab("Users", "/search/users/", selectedTab == "users")
+    
+    .resultsContainer
+
+    +createPostModals(userLoggedIn)
+
+block scripts
+    script(src="/javascript/search.js") 

@@ -10,7 +10,7 @@ block content
         
         .tabsContainer
             +createProfileTab("Remembering", `/profile/${profileUser.username}/following`, selectedTab != "followers")
-            +createProfileTab("Listeners", `/profile/${profileUser.username}/followers`, selectedTab = "followers")
+            +createProfileTab("Listeners", `/profile/${profileUser.username}/followers`, selectedTab == "followers")
 
         .resultsContainer
 

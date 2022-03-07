@@ -319,18 +319,19 @@ function getIdFromElement(element) {
 
 function createPostHtml(postData, postFocus = false) {
 
-    if(postData == null) return alert("post object is null")
+    if(postData == null) return alert("Post object is null")
 
     const postedBy = postData.postedBy
     const isShared = postData.shareData !== undefined
     const sharedBy = isShared ? postData.postedBy.username : null
     postData = isShared ? postData.shareData : postData
+    console.log(postData)
 
     if(postedBy._id === undefined) {
         return console.log("User object not populated")
     }
 
-    const sender = `${postedBy.firstName} ${postedBy.lastName}`
+    const sender = `${postData.postedBy.firstName} ${postData.postedBy.lastName}`
     const time = timeDifference(new Date(), new Date(postData.createdAt))
     const likeButtonActiveClass = postData.likes.includes(userLoggedIn._id) ? "active" : ""
     const shareButtonActiveClass = postData.shareUsers.includes(userLoggedIn._id) ? "active" : ""
@@ -389,14 +390,14 @@ function createPostHtml(postData, postFocus = false) {
                 <div class="mainContentContainer">
 
                     <div class="userImageContainer">
-                        <img src="${postedBy.profilePicture}">
+                        <img src="${postData.postedBy.profilePicture}">
                     </div>
 
                     <div class="postContentContainer">
                         <div class="pinnedPostLabel">${pinnedPostLabel}</div>
                         <div class="postHeader">
                             <span class="sender">${sender}</span>
-                            <a class="username" href="/profile/${postedBy.username}">♪${postedBy.username}</a>
+                            <a class="username" href="/profile/${postData.postedBy.username}">♪${postData.postedBy.username}</a>
                             <span class="date">${time}</span>
                             ${buttons}
                         </div>
