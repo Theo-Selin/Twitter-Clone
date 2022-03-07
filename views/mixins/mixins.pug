@@ -41,6 +41,8 @@ mixin createDeletePostModal()
 mixin createPostModals(userLoggedIn)
     +createCommentModal(userLoggedIn)
     +createDeletePostModal()
+    +createPinnedPostModal()
+    +createUnpinPostModal()
 
 mixin createFollowButton(user, isFollowing)
     - text = isFollowing ? "Forget" : "Remember"
@@ -67,3 +69,49 @@ mixin createImageUploadModal()
                 .modal-footer
                     button#closeModalButton.btn.btn-secondary(data-bs-dismiss="modal") Cancel
                     button#imageUploadButton.btn.btn-primary Upload
+
+mixin createCoverPhotoUploadModal()
+    #coverPhotoUploadModal.modal.fade(tabindex="-1", aria-labelledby="coverPhotoModalLabel", aria-hidden="true")
+        .modal-dialog
+            .modal-content
+                .modal-header
+                    h5#coverPhotoModalLabel.modal-title Upload new cover photo
+                    button.btn-close(data-bs-dismiss="modal", aria-label="Close")
+                .modal-body
+                    input#coverPhoto(type="file", name="filePhoto")
+
+                    .imagePreviewContainer
+                        img#coverPreview
+                .modal-footer
+                    button#closeModalButton.btn.btn-secondary(data-bs-dismiss="modal") Cancel
+                    button#coverPhotoButton.btn.btn-primary Upload
+
+mixin createPinnedPostModal()
+    #confirmPinModal.modal.fade(tabindex="-1", aria-labelledby="confirmPinModalLabel", aria-hidden="true")
+        .modal-dialog
+            .modal-content
+                .modal-header
+                    h5#confirmPinModalLabel.modal-title Pin this post?
+                    button.btn-close(data-bs-dismiss="modal", aria-label="Close")
+                .modal-body
+                    p This post will appear at the top of your profile. You can only pin one post
+                    .imagePreviewContainer
+                        img#coverPreview
+                .modal-footer
+                    button#closeModalButton.btn.btn-secondary(data-bs-dismiss="modal") Cancel
+                    button#pinPostButton.btn.btn-primary Pin
+
+mixin createUnpinPostModal()
+    #unpinModal.modal.fade(tabindex="-1", aria-labelledby="unpinModalLabel", aria-hidden="true")
+        .modal-dialog
+            .modal-content
+                .modal-header
+                    h5#unpinModalModalLabel.modal-title Unpin this post?
+                    button.btn-close(data-bs-dismiss="modal", aria-label="Close")
+                .modal-body
+                    p This post will be unpinned
+                    .imagePreviewContainer
+                        img#coverPreview
+                .modal-footer
+                    button#closeModalButton.btn.btn-secondary(data-bs-dismiss="modal") Cancel
+                    button#unpinPostButton.btn.btn-primary Remove

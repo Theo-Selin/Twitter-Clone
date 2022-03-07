@@ -75,11 +75,65 @@ $("#deletePostButton").click((event) => {
     $.ajax({
         url: `/api/posts/${postId}`,
         type: "DELETE",
-        success: () => {
+        success: (data, status, check) => {
+
+            if(check.status != 200) {
+                alert("Could not delete post")
+                return
+            }
+
             location.reload()
         }
     })
 
+})
+
+$("#confirmPinModal").on("show.bs.modal", (event) => {
+    const button = $(event.relatedTarget)
+    const postId = getIdFromElement(button)
+    $("#pinPostButton").data("id", postId)
+})
+
+$("#unpinModal").on("show.bs.modal", (event) => {
+    const button = $(event.relatedTarget)
+    const postId = getIdFromElement(button)
+    $("#unpinPostButton").data("id", postId)
+})
+
+$("#unpinPostButton").click((event) => {
+    const postId = $(event.target).data("id")
+
+    $.ajax({
+        url: `/api/posts/${postId}`,
+        type: "PUT",
+        data: { pinned: false },
+        success: (data, status, check) => {
+
+            if(check.status != 204) {
+                alert("Could not unpin post")
+                return
+            }
+            location.reload()
+        }
+    })
+})
+
+$("#pinPostButton").click((event) => {
+    const postId = $(event.target).data("id")
+
+    $.ajax({
+        url: `/api/posts/${postId}`,
+        type: "PUT",
+        data: { pinned: true },
+        success: (data, status, check) => {
+
+            if(check.status != 204) {
+                alert("Could not pin post")
+                return
+            }
+            location.reload()
+        }
+    })
 })
 
 $("#filePhoto").change(function() {
@@ -101,6 +155,25 @@ $("#filePhoto").change(function() {
     }
 })
 
+$("#coverPhoto").change(function() {
+    if(this.files && this.files[0]) {
+        const reader = new FileReader()
+        reader.onload = (event) => {
+            var image = document.getElementById("coverPreview")
+            image.src = event.target.result
+            if(cropper !== undefined) {
+                cropper.destroy()
+            }
+
+            cropper = new Cropper(image, {
+                aspectRatio: 16 / 9,
+                background: false
+            })
+        }
+        reader.readAsDataURL(this.files[0])
+    }
+})
+
 $("#imageUploadButton").click(() => {
     const canvas = cropper.getCroppedCanvas()
 
@@ -115,6 +188,29 @@ $("#imageUploadButton").click(() => {
 
         $.ajax({
             url: "/api/users/profilePicture",
+            type: "POST",
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: () => location.reload()
+        })
+    })
+})
+
+$("#coverPhotoButton").click(() => {
+    const canvas = cropper.getCroppedCanvas()
+
+    if(canvas == null) {
+        alert("Could not upload")
+        return
+    }
+
+    canvas.toBlob((blob) => {
+        const formData = new FormData()
+        formData.append("croppedImage", blob)
+
+        $.ajax({
+            url: "/api/users/coverPhoto",
             type: "POST",
             data: formData,
             processData: false,
@@ -265,8 +361,22 @@ function createPostHtml(postData, postFocus = false) {
     }
 
     let buttons = ""
+    let pinnedPostLabel = ""
     if(postData.postedBy._id == userLoggedIn._id) {
+
+        let pinnedClass = ""
+        let dataTarget = "#confirmPinModal"
+        if(postData.pinned === true) {
+            pinnedClass = "active"
+            dataTarget = "#unpinModal"
+            pinnedPostLabel = "<i class='fa-solid fa-thumbtack'></i> <span>Pinned post</span>"
+        }
+
         buttons = `
+            <button class="pinPostButton ${pinnedClass}" data-id="${postData._id}" data-bs-toggle="modal" data-bs-target="${dataTarget}">
+            <i class="fa-solid fa-thumbtack"></i>
+            </button>
+
             <button class="deletePostMark" data-id="${postData._id}" data-bs-toggle="modal" data-bs-target="#deletePostModal">
                 <i class="fa-solid fa-xmark"></i>
             </button>`
@@ -283,7 +393,7 @@ function createPostHtml(postData, postFocus = false) {
                     </div>
 
                     <div class="postContentContainer">
-
+                        <div class="pinnedPostLabel">${pinnedPostLabel}</div>
                         <div class="postHeader">
                             <span class="sender">${sender}</span>
                             <a class="username" href="/profile/${postedBy.username}">♪${postedBy.username}</a>

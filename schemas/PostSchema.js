@@ -11,7 +11,6 @@ const PostSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: "User"
     },
-    pinned: Boolean,
     likes: [{
         type: Schema.Types.ObjectId,
         ref: "User"
@@ -27,7 +26,8 @@ const PostSchema = new Schema({
     replyTo: {
         type: Schema.Types.ObjectId,
         ref: "Post"
-    }
+    },
+    pinned: Boolean
 
 }, { timestamps: true })
 
