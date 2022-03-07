@@ -101,6 +101,29 @@ $("#filePhoto").change(function() {
     }
 })
 
+$("#imageUploadButton").click(() => {
+    const canvas = cropper.getCroppedCanvas()
+
+    if(canvas == null) {
+        alert("Could not upload")
+        return
+    }
+
+    canvas.toBlob((blob) => {
+        const formData = new FormData()
+        formData.append("croppedImage", blob)
+
+        $.ajax({
+            url: "/api/users/profilePicture",
+            type: "POST",
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: () => location.reload()
+        })
+    })
+})
+
 $(document).on("click", ".likeButton", (event) => {
     const button = $(event.target)
     const postId = getIdFromElement(button)
