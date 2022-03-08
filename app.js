@@ -30,6 +30,7 @@ const postRoute = require("./routes/postRoutes")
 const profileRoute = require("./routes/profileRoutes")
 const uploadRoute = require("./routes/uploadRoutes")
 const searchRoute = require("./routes/searchRoutes")
+const messagesRoute = require("./routes/messagesRoutes")
 const logoutRoute = require("./routes/logoutRoutes")
 
 app.use("/login", loginRoute)
@@ -38,14 +39,17 @@ app.use("/posts", middleware.requireLogin, postRoute)
 app.use("/profile", middleware.requireLogin, profileRoute)
 app.use("/uploads", uploadRoute)
 app.use("/search", middleware.requireLogin, searchRoute)
+app.use("/messages", middleware.requireLogin, messagesRoute)
 app.use("/logout", logoutRoute)
 
 // Api Routes //
 const postsRoute = require("./routes/api/posts")
 const usersRoute = require("./routes/api/users")
+const chatsRoute = require("./routes/api/chats")
 
 app.use("/api/posts", postsRoute)
 app.use("/api/users", usersRoute)
+app.use("/api/chats", chatsRoute)
 
 
 // Render home-page //

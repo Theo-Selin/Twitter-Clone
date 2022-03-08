@@ -11,14 +11,17 @@
     background-color: var(--spotify-dark-gray);
 }
 
+html, body {
+    height: 100%;
+    min-height: 100%;
+    background-color: var(--spotify-dark-gray);
+    font-weight: 300;
+}
+
 
 
 * {
     outline: none !important;
-}
-
-body {
-    background-color: var(--spotify-dark-gray);
 }
 
 a {
@@ -73,8 +76,15 @@ nav a.logo:hover {
     color: var(--spotify-green)
 }
 
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
 .wrapper > .row {
     margin: 0;
+    height: 100%;
 }
 
 button {
@@ -569,4 +579,234 @@ button span {
     background-color: var(--spotify-black);
     border: none;
     color: var(--spotify-bright-gray)
+}
+
+#newMessageButton {
+    opacity: 80%;
+    font-size: 18px;
+    color: var(--spotify-green);
+}
+
+#newMessageButton:hover {
+    opacity: 100%;
+}
+
+.chatPageContainer {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-height: 0;
+    flex: 1;
+}
+
+.chatTitleBar {
+    border-bottom: 1px solid var(--spotify-gray);
+    display: flex;
+    align-items: center;
+    min-height: 60px;
+    padding: 10px;
+}
+
+.chatTitleBar label {
+    color: var(--spotify-gray);
+    margin-right: 10px;
+}
+
+#userSearchTextbox {
+    border: none;
+    flex: 1;
+    font-weight: 200px;
+    min-width: 150px;
+    background-color: var(--spotify-dark-gray);
+    color: var(--spotify-bright-gray);
+}
+
+#createChatButton {
+    border: none;
+    background-color: var(--spotify-green);
+    color: white;
+    padding: 7px 20px;
+    margin: 10px auto;
+    border-radius: 40px;
+    opacity: 90%;
+}
+
+#createChatButton:hover {
+    opacity: 100%;
+}
+
+#createChatButton:disabled {
+    opacity: 100%;
+    background-color: var(--spotify-gray);
+    color: var(--spotify-bright-gray)
+}
+
+.selectedUser {
+    border: 1px solid var(--spotify-gray);
+    border-radius: 5px;
+    margin: 3px;
+    font-weight: 300;
+    color: var(--spotify-green);
+    padding: 2px 5px;
+    display: inline-block;
+}
+
+.resultListItem {
+    opacity: 80%;
+    padding: 7px;
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    border-bottom: 1px solid var(--spotify-gray)
+}
+
+.resultListItem img {
+    height: 100%;
+    width: 100%;
+    border-radius: 50%;
+}
+
+.resultListItem:hover {
+    opacity: 100%;
+}
+
+.resultsDetailsContainer {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.resultsDetailsContainer .heading {
+    color: white;
+    font-weight: 500;
+}
+
+.resultsDetailsContainer .subText {
+    color: var(--spotify-bright-gray);
+    font-size: 14px;
+}
+
+.resultsImageContainer {
+    height: 40px;
+    width: 40px;
+    position: relative;
+    margin-right: 10px;
+    display: flex;
+    align-items: center;
+    padding: 5px;
+}
+
+.groupChatImage img {
+    height: 65%;
+    width: 65%;
+    position: absolute;
+    bottom: 0;
+    margin: 0;
+    border: 3px solid var(--spotify-dark-gray)
+}
+
+.groupChatImage img:first-of-type {
+    top: 0;
+    right: 0;
+}
+
+.ellipsis {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.messageTitleBarContainer {
+    border-bottom: 1px solid var(--spotify-gray);
+    display: flex;
+    align-items: center;
+    padding: var(--spacing)
+}
+
+#messageName {
+    color: var(--spotify-bright-gray);
+    width: 100%;
+    border: 1px solid transparent;
+    padding: 0 5px;
+}
+
+#messageName:hover {
+    border: 1px solid var(--spotify-gray);
+    cursor: text;
+}
+
+.messageContainer {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow-y: hidden;
+}
+
+.messageContainer .footer{
+    display: flex;
+    padding: var(--spacing);
+    flex-shrink: 0;
+}
+
+.messageContainer .footer textarea {
+    color: var(--spotify-bright-gray);
+    flex: 1;
+    resize: none;
+    background-color: rgba(0, 0, 0, 0.05);
+    border-radius: 18px;
+    border: none;
+    padding: 8px 20px;;
+    height: 38px;
+    overflow-y: hidden;
+}
+
+.messageContainer .footer button {
+    opacity: 80%;
+    background-color: transparent;
+    color: var(--spotify-green);
+    font-size: 24px;
+}
+
+.messageContainer .footer button:hover {
+    opacity: 100%;
+}
+
+.chatMessages {
+    flex: 1;
+    flex-direction: column;
+    padding: var(--spacing);
+    display: flex;
+    overflow-y: auto;
+}
+
+.messageImagesContainer {
+    display: flex;
+    flex-direction: row-reverse;
+    height: 100%;
+    margin-right: 10px;
+}
+
+.messageImagesContainer img {
+    width: 40px;
+    height: 40px;
+    border: 3px solid var(--spotify-dark-gray);
+    border-radius: 50%;
+}
+
+.messageImagesContainer .userCount {
+    color: white;
+    height: 40px;
+    width: 40px;
+    background-color: var(--spotify-gray);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    border: 2px solid var(--spotify-dark-gray);
+}
+
+.messageImagesContainer img:not(:last-child),
+.messageImagesContainer .userCount {
+    margin-left: -10px;
 }

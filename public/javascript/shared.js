@@ -1,7 +1,9 @@
 // Shared javascript code over the site //
 
-// Global code //
+// Global variables //
 let cropper
+let timer
+const selectedUsers = []
 
 // Enables button when textarea fills //
 $("#postTextarea, #commentTextarea").keyup(event => {
@@ -217,6 +219,45 @@ $("#coverPhotoButton").click(() => {
             contentType: false,
             success: () => location.reload()
         })
+    })
+})
+
+$("#userSearchTextbox").keydown((event) => {
+    clearTimeout(timer)
+    const textbox = $(event.target)
+    let value = textbox.val()
+
+    if(value == "" && (event.which == 8 || event.keyCode == 8)) {
+        // remove user from selection
+        selectedUsers.pop()
+        updateSelectedUsersHtml()
+        $(".resultsContainer").html("")
+
+        if(selectedUsers.length == 0) {
+            $("#createChatButton").prop("disabled", true)
+        }
+        return
+    }
+
+    timer = setTimeout(() => {
+        value = textbox.val().trim()
+
+        if(value == "") {
+            $(".resultsContainer").html("")
+        } else {
+            searchUsers(value)
+        }
+    }, 200)
+})
+
+$("#createChatButton").click(() => {
+    const data = JSON.stringify(selectedUsers)
+
+    $.post("/api/chats", { users: data }, chat => {
+
+        if(!chat || !chat._id) return alert("Can't find chat")
+
+        window.location.href = `/messages/${chat._id}`
     })
 })
 
@@ -549,4 +590,52 @@ function createUserHtml(userData, showFollowButton) {
             ${followButton}
         </div>    
     `
+}
+
+function searchUsers(searchTerm) {
+    $.get("/api/users", { search: searchTerm }, results => {
+        renderSelectableUsers(results, $(".resultsContainer"))
+    })
+}
+
+function renderSelectableUsers(results, container) {
+    container.html("")
+
+    results.forEach(result => {
+
+        // removes users from the list if they're previously selected //
+        if(result._id == userLoggedIn._id || selectedUsers.some(user => user._id == result._id)) {
+            return
+        }
+
+        const html = createUserHtml(result, false)
+        const element = $(html)
+        element.click(() => userSelected(result))
+        container.append(element)
+    })
+
+    if(results.length == 0) {
+        container.append("<span class='noResults'>No results found</span")
+    }
+}
+
+function userSelected(user) {
+    selectedUsers.push(user)
+    updateSelectedUsersHtml()
+    $("#userSearchTextbox").val("").focus()
+    $(".resultsContainer").html("")
+    $("#createChatButton").prop("disabled", false)
+}
+
+function updateSelectedUsersHtml() {
+    const elements = []
+
+    selectedUsers.forEach(user => {
+        const name = `${user.firstName} ${user.lastName}`
+        const userElement = $(`<span class="selectedUser">${name}</span>`)
+        elements.push(userElement)
+    })
+
+    $(".selectedUser").remove()
+    $("#selectedUsers").prepend(elements)
 }

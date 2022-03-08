@@ -115,3 +115,26 @@ mixin createUnpinPostModal()
                 .modal-footer
                     button#closeModalButton.btn.btn-secondary(data-bs-dismiss="modal") Cancel
                     button#unpinPostButton.btn.btn-primary Unpin
+
+mixin createMessageImage(chatData, userLoggedIn)
+    if(!chatData)
+        return
+
+    - let i = 0
+    - const maxImagesToShow = 3
+    - let remainingUsers = chatData.users.length - maxImagesToShow
+    - remainingUsers-- // Removing own image
+                        
+    .messageImagesContainer 
+
+        if remainingUsers > 0
+            .userCount
+                span +#{remainingUsers}    
+
+        each user in chatData.users
+            if chatData.users.length != 1 && user._id == userLoggedIn._id
+                - continue
+            else if i >= maxImagesToShow 
+                - break
+            img(src=user.profilePicture, alt="User's profile picture", title=user.firstName)
+            - i++

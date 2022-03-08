@@ -6,7 +6,7 @@ const bcrypt = require("bcrypt")
 const path = require("path")
 const User = require("../schemas/UserSchema")
 
-// Render post-page //
+// Routes //
 router.get("/images/:path", (req, res, next) => {
     res.sendFile(path.join(__dirname, `../uploads/images/${req.params.path}`))
 })
