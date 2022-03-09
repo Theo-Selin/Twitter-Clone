@@ -7,7 +7,7 @@ const User = require("../schemas/UserSchema")
 
 app.use(bodyParser.urlencoded({extended: false}))
 
-// Render logout-page //
+// Routing //
 router.get("/", (req, res, next) => {
     
     if(req.session) {

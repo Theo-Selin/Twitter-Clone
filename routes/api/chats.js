@@ -8,7 +8,7 @@ const Chat = require("../../schemas/ChatSchema")
 
 app.use(bodyParser.urlencoded({extended: false}))
 
-// Routes //
+// Routing //
 router.post("/", async (req, res, next) => {
 
     if(!req.body.users) {
@@ -38,7 +38,7 @@ router.post("/", async (req, res, next) => {
     })
 })
 
-// Find users where 
+// Find users where the element matches the user ID in array
 router.get("/", async (req, res, next) => {
     Chat.find({ users: { $elemMatch: { $eq: req.session.user._id}}})
     .populate("users")

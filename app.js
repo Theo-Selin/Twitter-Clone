@@ -14,9 +14,10 @@ app.set("views", "views")
 
 app.use(bodyParser.urlencoded({extended: false}))
 
-// CSS implementation //
+// Global code implementation //
 app.use(express.static(path.join(__dirname, "public")))
 
+// Start session //
 app.use(session({
     secret: "Mangoraja",
     resave: true,
@@ -63,3 +64,4 @@ app.get("/", middleware.requireLogin, (req, res, next) => {
 
     res.status(200).render("home", payload)
 })
+

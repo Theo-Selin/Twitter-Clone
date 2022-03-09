@@ -7,7 +7,7 @@ const mongoose = require("mongoose")
 const User = require("../schemas/UserSchema")
 const Chat = require("../schemas/ChatSchema")
 
-// Routes //
+// Routing //
 router.get("/", (req, res, next) => {
     res.status(200).render("inboxPage", {
         pageTitle: "Inbox",

@@ -24,16 +24,12 @@ $("#postTextarea, #commentTextarea").keyup(event => {
     }
 })
 
+// Event handler for submitting posts //
 $("#submitPostButton, #submitCommentButton").click(event => {
     const button = $(event.target)
-
     const isPopup = button.parents(".modal").length == 1
-
     const textbox = isPopup ? $("#commentTextarea") : $("#postTextarea")
-
-    const data = {
-        content: textbox.val()
-    }
+    const data = { content: textbox.val() }
 
     if(isPopup) {
         const id = button.data().id
@@ -53,6 +49,7 @@ $("#submitPostButton, #submitCommentButton").click(event => {
     })
 })
 
+// 
 $("#commentModal").on("show.bs.modal", (event) => {
     const button = $(event.relatedTarget)
     const postId = getIdFromElement(button)
@@ -348,6 +345,7 @@ $(document).on("click", ".followButton", (event) => {
 
 })
 
+// Get postID from root element by looking for closest element with "post" as class //
 function getIdFromElement(element) {
     const isRoot = element.hasClass("post")
     const rootElement = isRoot == true ? element : element.closest(".post")

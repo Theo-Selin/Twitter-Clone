@@ -12,7 +12,7 @@ const { send } = require("express/lib/response")
 
 app.use(bodyParser.urlencoded({extended: false}))
 
-// Routes //
+// Routing //
 router.get("/", async (req, res, next) => {
     let searchObject = req.query
 

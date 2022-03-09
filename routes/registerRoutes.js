@@ -10,7 +10,7 @@ app.set("views", "views")
 
 app.use(bodyParser.urlencoded({extended: false}))
 
-// Routes //
+// Routing //
 router.get("/", (req, res, next) => {
     res.status(200).render("register")
 })
