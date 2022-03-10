@@ -49,6 +49,11 @@ mixin createFollowButton(user, isFollowing)
     - buttonClass = isFollowing ? "followButton following" : "followButton"
     button(class=buttonClass, data-user=user._id) #{text}
 
+mixin createHideButton(user, isHidden)
+    - hideButtonClass = isHidden ? "hideButton hidden" : "hideButton"
+    button(class=hideButtonClass, data-user=user._id)
+        i(class="fa-solid fa-eye")
+
 mixin createProfileTab(tabName, href, isSelected)
     - className = isSelected ? "tab active" : "tab"
     a(href=href, class=className)
@@ -81,13 +86,13 @@ mixin createEditProfileModal(profileData, userLoggedIn)
                     .updateContainer
                         form#updateForm(method="post", onsubmit="event.preventDefault()") 
 
-                            i.fa-solid.fa-eye
+                            +createHideButton(profileData, false)
                             input#firstName(type="text", name="firstName", placeholder="First name", value=profileData.firstName, required="")
-                            i.fa-solid.fa-eye
+                            +createHideButton(profileData, false)
                             input#lastName(type="text", name="lastName", placeholder="Last name", value=profileData.lastName, required="")
-                            i.fa-solid.fa-eye
+                            +createHideButton(profileData, false)
                             input#username(type="text", name="username", placeholder="Username", value=profileData.username, required="")
-                            i.fa-solid.fa-eye
+                            +createHideButton(profileData, false)
                             input#email(type="email", name="email", placeholder="Email", value=profileData.email, required="")
                             p#logoutWarning *Changing profile information forces you to relog
                     

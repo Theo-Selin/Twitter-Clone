@@ -380,7 +380,7 @@ button span {
 .profileButton {
     border: 1px solid var(--spotify-gray);
     color: var(--spotify-gray);
-    font-size: 20px;
+    font-size: 16px;
     font-weight: bold;
     padding: 5px 15px;
     border-radius: 60px;
@@ -391,7 +391,7 @@ button span {
 .followButton.following {
     background-color: var(--spotify-green);
     color: white;
-    font-size: 20px;
+    font-size: 16px;
     font-weight: bold;
     padding: 5px 15px;
     border-radius: 60px;
@@ -408,7 +408,7 @@ button span {
     opacity: 90%;
     background-color: var(--spotify-green);
     color: white;
-    font-size: 20px;
+    font-size: 16px;
     font-weight: bold;
     padding: 5px 15px;
     border-radius: 60px;
@@ -420,7 +420,7 @@ button span {
     opacity: 90%;
     background-color: var(--red);
     color: white;
-    font-size: 20px;
+    font-size: 16px;
     font-weight: bold;
     padding: 5px 15px;
     border-radius: 60px;
@@ -813,7 +813,7 @@ button span {
 
 #firstName, #lastName, #username, #email{
     color: var(--spotify-bright-gray);
-    width: 95%;
+    width: 90%;
     background-color: var(--spotify-dark-gray);
     border: none;
     border-bottom: 1px solid var(--spotify-gray);
@@ -821,20 +821,18 @@ button span {
     flex: 2;
 }
 
-.updateContainer i {
+.updateContainer .hideButton {
     font-size: 14px;
     margin-bottom: 10px;
     color: var(--spotify-gray);
-    width: 5%;
+    width: 10%;
     flex: 2;
 }
 
-.updateContainer i:hover {
+.updateContainer .hideButton:hover {
     cursor: pointer;
     color: var(--spotify-green);
     font-size: 14px;
-    width: 5%;
-    flex: 2;
 }
 
 #logoutWarning {

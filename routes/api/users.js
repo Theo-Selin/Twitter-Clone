@@ -59,6 +59,7 @@ router.put("/:userId/follow", async (req, res, next) => {
     res.status(200).send(req.session.user)
 })
 
+// Counter route //
 router.get("/:userId/following", async (req, res, next) => {
     User.findById(req.params.userId)
     .populate("following")
@@ -71,6 +72,7 @@ router.get("/:userId/following", async (req, res, next) => {
     })
 })
 
+// Counter route //
 router.get("/:userId/followers", async (req, res, next) => {
     User.findById(req.params.userId)
     .populate("followers")
