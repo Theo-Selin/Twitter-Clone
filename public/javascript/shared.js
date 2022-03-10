@@ -49,7 +49,7 @@ $("#submitPostButton, #submitCommentButton").click(event => {
     })
 })
 
-// 
+// Show specific bootstrap modal for commenting on post //
 $("#commentModal").on("show.bs.modal", (event) => {
     const button = $(event.relatedTarget)
     const postId = getIdFromElement(button)
@@ -62,12 +62,14 @@ $("#commentModal").on("show.bs.modal", (event) => {
 
 $("#commentModal").on("hidden.bs.modal", () => $("#originalPostContainer").html(""))
 
+// Triggers modal for deleting post //
 $("#deletePostModal").on("show.bs.modal", (event) => {
     const button = $(event.relatedTarget)
     const postId = getIdFromElement(button)
     $("#deletePostButton").data("id", postId)
 })
 
+// Deletes post //
 $("#deletePostButton").click((event) => {
     const postId = $(event.target).data("id")
 
@@ -87,18 +89,21 @@ $("#deletePostButton").click((event) => {
 
 })
 
+// Triggers modal for pinning post //
 $("#confirmPinModal").on("show.bs.modal", (event) => {
     const button = $(event.relatedTarget)
     const postId = getIdFromElement(button)
     $("#pinPostButton").data("id", postId)
 })
 
+// Triggers modal for unpinning post //
 $("#unpinModal").on("show.bs.modal", (event) => {
     const button = $(event.relatedTarget)
     const postId = getIdFromElement(button)
     $("#unpinPostButton").data("id", postId)
 })
 
+// Unpinning post by updating boolean //
 $("#unpinPostButton").click((event) => {
     const postId = $(event.target).data("id")
 
@@ -117,6 +122,7 @@ $("#unpinPostButton").click((event) => {
     })
 })
 
+// Pin post by updating boolean //
 $("#pinPostButton").click((event) => {
     const postId = $(event.target).data("id")
 
@@ -135,6 +141,7 @@ $("#pinPostButton").click((event) => {
     })
 })
 
+// Cropper profile piture //
 $("#filePhoto").change(function() {
     if(this.files && this.files[0]) {
         const reader = new FileReader()
@@ -154,6 +161,7 @@ $("#filePhoto").change(function() {
     }
 })
 
+// Cropper cover photo //
 $("#coverPhoto").change(function() {
     if(this.files && this.files[0]) {
         const reader = new FileReader()
@@ -173,6 +181,7 @@ $("#coverPhoto").change(function() {
     }
 })
 
+// Upload cropped profile picture //
 $("#imageUploadButton").click(() => {
     const canvas = cropper.getCroppedCanvas()
 
@@ -196,6 +205,7 @@ $("#imageUploadButton").click(() => {
     })
 })
 
+// Upload cropped cover photo //
 $("#coverPhotoButton").click(() => {
     const canvas = cropper.getCroppedCanvas()
 
@@ -225,7 +235,8 @@ $("#userSearchTextbox").keydown((event) => {
     let value = textbox.val()
 
     if(value == "" && (event.which == 8 || event.keyCode == 8)) {
-        // remove user from selection
+        
+        // remove selected user from selection
         selectedUsers.pop()
         updateSelectedUsersHtml()
         $(".resultsContainer").html("")
@@ -356,6 +367,7 @@ function getIdFromElement(element) {
     return postId
 }
 
+// Creates the HTML for posts //
 function createPostHtml(postData, postFocus = false) {
 
     if(postData == null) return alert("Post object is null")
@@ -364,7 +376,6 @@ function createPostHtml(postData, postFocus = false) {
     const isShared = postData.shareData !== undefined
     const sharedBy = isShared ? postData.postedBy.username : null
     postData = isShared ? postData.shareData : postData
-    console.log(postData)
 
     if(postedBy._id === undefined) {
         return console.log("User object not populated")
@@ -372,6 +383,8 @@ function createPostHtml(postData, postFocus = false) {
 
     const sender = `${postData.postedBy.firstName} ${postData.postedBy.lastName}`
     const time = timeDifference(new Date(), new Date(postData.createdAt))
+
+    // Class changes for styling //
     const likeButtonActiveClass = postData.likes.includes(userLoggedIn._id) ? "active" : ""
     const shareButtonActiveClass = postData.shareUsers.includes(userLoggedIn._id) ? "active" : ""
     const postFocusClass = postFocus ? "postFocus" : ""
@@ -384,6 +397,7 @@ function createPostHtml(postData, postFocus = false) {
         </span>`
     }
 
+    // Text indicating reply //
     let replyIndicator = ""
     if(postData.replyTo && postData.replyTo._id) {
 
@@ -400,6 +414,7 @@ function createPostHtml(postData, postFocus = false) {
             </div>`
     }
 
+    // Buttons for deleting or pinning posts //
     let buttons = ""
     let pinnedPostLabel = ""
     if(postData.postedBy._id == userLoggedIn._id) {
@@ -422,6 +437,7 @@ function createPostHtml(postData, postFocus = false) {
             </button>`
     }
 
+    // Post html //
     return `<div class="post ${postFocusClass}" data-id='${postData._id}'>
                 <div class="postActionContainer">
                     ${sharedText}
@@ -512,6 +528,7 @@ function timeDifference(current, previous) {
     }
 }
 
+// Makes sure post data is in array and fills container with post //
 function renderPosts(results, container) {
     container.html("")
 
