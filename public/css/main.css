@@ -810,3 +810,36 @@ button span {
 .messageImagesContainer .userCount {
     margin-left: -10px;
 }
+
+#firstName, #lastName, #username, #email{
+    color: var(--spotify-bright-gray);
+    width: 95%;
+    background-color: var(--spotify-dark-gray);
+    border: none;
+    border-bottom: 1px solid var(--spotify-gray);
+    margin-bottom: 20px;
+    flex: 2;
+}
+
+.updateContainer i {
+    font-size: 14px;
+    margin-bottom: 10px;
+    color: var(--spotify-gray);
+    width: 5%;
+    flex: 2;
+}
+
+.updateContainer i:hover {
+    cursor: pointer;
+    color: var(--spotify-green);
+    font-size: 14px;
+    width: 5%;
+    flex: 2;
+}
+
+#logoutWarning {
+    text-align: center;
+    justify-content: center;
+    font-size: 8;
+    color: var(--red);
+}

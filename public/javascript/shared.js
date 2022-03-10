@@ -60,15 +60,6 @@ $("#commentModal").on("show.bs.modal", (event) => {
     })
 })
 
-$("#commentModal").on("hidden.bs.modal", () => $("#originalPostContainer").html(""))
-
-// Triggers modal for deleting post //
-$("#deletePostModal").on("show.bs.modal", (event) => {
-    const button = $(event.relatedTarget)
-    const postId = getIdFromElement(button)
-    $("#deletePostButton").data("id", postId)
-})
-
 // Deletes post //
 $("#deletePostButton").click((event) => {
     const postId = $(event.target).data("id")

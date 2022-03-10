@@ -3,7 +3,7 @@ mixin createPostForm(userLoggedIn)
         .userImageContainer
             img(src=userLoggedIn.profilePicture, alt="Profile picture")
         .textareaContainer
-            textarea#postTextarea(placeholder="What's jammin'?")
+            textarea#postTextarea(maxlength="140", placeholder="What's jammin'?")
             .buttonsContainer
                 button#submitPostButton(disabled="") Post
 
@@ -20,7 +20,7 @@ mixin createCommentModal(userLoggedIn)
                         .userImageContainer
                             img(src=userLoggedIn.profilePicture, alt="Profile picture")
                         .textareaContainer
-                            textarea#commentTextarea(placeholder="What's jammin'?")
+                            textarea#commentTextarea(maxlength="140", placeholder="What's jammin'?")
                 .modal-footer
                     button#closeModalButton.btn.btn-secondary(type="button", data-bs-dismiss="modal") Close
                     button#submitCommentButton.btn.btn-primary(type="button", disabled="") Send
@@ -69,6 +69,34 @@ mixin createImageUploadModal()
                 .modal-footer
                     button#closeModalButton.btn.btn-secondary(data-bs-dismiss="modal") Cancel
                     button#imageUploadButton.btn.btn-primary Upload
+
+mixin createEditProfileModal(profileData, userLoggedIn)
+    #editProfileModal.modal.fade(tabindex="-1", aria-labelledby="editProfileModalLabel", aria-hidden="true")
+        .modal-dialog
+            .modal-content
+                .modal-header
+                    h5#editProfileModalLabel.modal-title Edit profile information
+                    button.btn-close(data-bs-dismiss="modal", aria-label="Close")
+                .modal-body
+                    .updateContainer
+                        form#updateForm(method="post", onsubmit="event.preventDefault()") 
+
+                            i.fa-solid.fa-eye
+                            input#firstName(type="text", name="firstName", placeholder="First name", value=profileData.firstName, required="")
+                            i.fa-solid.fa-eye
+                            input#lastName(type="text", name="lastName", placeholder="Last name", value=profileData.lastName, required="")
+                            i.fa-solid.fa-eye
+                            input#username(type="text", name="username", placeholder="Username", value=profileData.username, required="")
+                            i.fa-solid.fa-eye
+                            input#email(type="email", name="email", placeholder="Email", value=profileData.email, required="")
+                            p#logoutWarning *Changing profile information forces you to relog
+                    
+                    script.
+                        const form = document.getElementById("UpdateForm")
+
+                .modal-footer
+                    button#closeModalButton.btn.btn-secondary(data-bs-dismiss="modal") Cancel
+                    button#editProfileButton.btn.btn-primary(type="submit", value="Update account") Save
 
 mixin createCoverPhotoUploadModal()
     #coverPhotoUploadModal.modal.fade(tabindex="-1", aria-labelledby="coverPhotoModalLabel", aria-hidden="true")

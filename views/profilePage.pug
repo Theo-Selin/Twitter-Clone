@@ -39,10 +39,15 @@ block content
                     - else
                         +createFollowButton(profileUser, false)
 
+                if profileUser._id == userLoggedIn._id
+                    button.profileButton(data-bs-toggle="modal", data-bs-target="#editProfileModal")
+                        i.fa-solid.fa-gear
+
 
 
             .userDetailsContainer
                 span.displayName #{profileUser.firstName} #{profileUser.lastName}
+                span.email #{profileUser.email}
                 span.username ♪#{profileUser.username}
                 span.description #{profileUser.description}
 
@@ -65,6 +70,7 @@ block content
         +createPostModals(userLoggedIn)
         +createImageUploadModal()
         +createCoverPhotoUploadModal()
+        +createEditProfileModal(userLoggedIn)
 
 block scripts
     script(src="/javascript/profile.js") 

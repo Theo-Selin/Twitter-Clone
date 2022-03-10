@@ -7,6 +7,31 @@ $(document).ready(() => {
     }
 })
 
+$("#editProfileButton").click(() => {
+    const firstName = $("#firstName").val().trim()
+    const lastName = $("#lastName").val().trim()
+    const username = $("#username").val().trim()
+    const email = $("#email").val().trim()
+    
+    $.ajax({
+        url: `/api/users/${profileUserId}`,
+        type: "PUT",
+        data: {
+            firstName: firstName,
+            lastName: lastName,
+            username: username,
+            email: email
+        },
+        success: (data, status, check) => {
+            if(check.status != 204) {
+                alert("Could not update")
+            } else {
+                window.location.href = "/logout"
+            }
+        }
+    })
+})
+
 function loadPosts() {
     $.get("/api/posts", { postedBy: profileUserId, pinned: true }, results => {
         renderPinnedPost(results, $(".pinnedPostContainer"))

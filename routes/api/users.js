@@ -22,6 +22,7 @@ router.get("/", async (req, res, next) => {
                 { firstName: { $regex: req.query.search, $options: "i" }},
                 { lastName: { $regex: req.query.search, $options: "i" }},
                 { username: { $regex: req.query.search, $options: "i" }},
+                { email: { $regex: req.query.search, $options: "i" }}
             ]
         }
     }
@@ -124,6 +125,15 @@ router.post("/coverPhoto", upload.single("croppedImage"), async (req, res, next)
         res.sendStatus(204)
     })
 
+})
+
+router.put("/:profileUserId", async (req, res, next) => {
+    User.findByIdAndUpdate(req.params.profileUserId, req.body)
+    .then(results => res.sendStatus(204))
+    .catch(error => {
+        console.log(error)
+        res.sendStatus(400)
+    })
 })
 
 module.exports = router
