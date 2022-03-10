@@ -811,14 +811,20 @@ button span {
     margin-left: -10px;
 }
 
-#firstName, #lastName, #username, #email{
+#firstName, #lastName, #username, #email, #aboutMe{
+    font-size: 16px;
     color: var(--spotify-bright-gray);
     width: 90%;
     background-color: var(--spotify-dark-gray);
     border: none;
     border-bottom: 1px solid var(--spotify-gray);
     margin-bottom: 20px;
+    resize: none;
     flex: 2;
+}
+
+.aboutMePage {
+    color: var(--spotify-green)
 }
 
 .updateContainer .hideButton {

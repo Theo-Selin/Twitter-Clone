@@ -12,6 +12,7 @@ $("#editProfileButton").click(() => {
     const lastName = $("#lastName").val().trim()
     const username = $("#username").val().trim()
     const email = $("#email").val().trim()
+    const aboutMe = $("#aboutMe").val()
     
     $.ajax({
         url: `/api/users/${profileUserId}`,
@@ -20,7 +21,8 @@ $("#editProfileButton").click(() => {
             firstName: firstName,
             lastName: lastName,
             username: username,
-            email: email
+            email: email,
+            aboutMe: aboutMe
         },
         success: (data, status, check) => {
             if(check.status != 204) {

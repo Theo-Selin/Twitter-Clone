@@ -51,6 +51,10 @@ const UserSchema = new Schema({
     followers: [{
         type: Schema.Types.ObjectId,
         ref: "User"
+    }],
+    aboutMe: [{
+        type: String,
+        required: false,
     }]
 }, { timestamps: true })
 
