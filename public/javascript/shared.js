@@ -60,6 +60,12 @@ $("#commentModal").on("show.bs.modal", (event) => {
     })
 })
 
+$("#deletePostModal").on("show.bs.modal", (event) => {
+    const button = $(event.relatedTarget)
+    const postId = getIdFromElement(button)
+    $("#deletePostButton").data("id", postId)
+})
+
 // Deletes post //
 $("#deletePostButton").click((event) => {
     const postId = $(event.target).data("id")
@@ -69,7 +75,7 @@ $("#deletePostButton").click((event) => {
         type: "DELETE",
         success: (data, status, check) => {
 
-            if(check.status != 200) {
+            if(check.status != 202) {
                 alert("Could not delete post")
                 return
             }
@@ -137,7 +143,7 @@ $("#filePhoto").change(function() {
     if(this.files && this.files[0]) {
         const reader = new FileReader()
         reader.onload = (event) => {
-            var image = document.getElementById("imagePreview")
+            let image = document.getElementById("imagePreview")
             image.src = event.target.result
             if(cropper !== undefined) {
                 cropper.destroy()
@@ -157,7 +163,7 @@ $("#coverPhoto").change(function() {
     if(this.files && this.files[0]) {
         const reader = new FileReader()
         reader.onload = (event) => {
-            var image = document.getElementById("coverPreview")
+            let image = document.getElementById("coverPreview")
             image.src = event.target.result
             if(cropper !== undefined) {
                 cropper.destroy()
@@ -217,6 +223,34 @@ $("#coverPhotoButton").click(() => {
             contentType: false,
             success: () => location.reload()
         })
+    })
+})
+
+// Update profile information //
+$("#editProfileButton").click(() => {
+    const firstName = $("#firstName").val().trim()
+    const lastName = $("#lastName").val().trim()
+    const username = $("#username").val().trim()
+    const email = $("#email").val().trim()
+    const aboutMe = $("#aboutMe").val()
+    
+    $.ajax({
+        url: `/api/users/${profileUserId}`,
+        type: "PUT",
+        data: {
+            firstName: firstName,
+            lastName: lastName,
+            username: username,
+            email: email,
+            aboutMe: aboutMe
+        },
+        success: (data, status, check) => {
+            if(check.status != 204) {
+                alert("Could not update")
+            } else {
+                window.location.href = `/profile/${profileUserId}`
+            }
+        }
     })
 })
 
