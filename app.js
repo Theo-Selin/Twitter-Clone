@@ -44,13 +44,15 @@ app.use("/messages", middleware.requireLogin, messagesRoute)
 app.use("/logout", logoutRoute)
 
 // Api Routes //
-const postsRoute = require("./routes/api/posts")
-const usersRoute = require("./routes/api/users")
-const chatsRoute = require("./routes/api/chats")
+const postsApiRoute = require("./routes/api/posts")
+const usersApiRoute = require("./routes/api/users")
+const chatsApiRoute = require("./routes/api/chats")
+const messagesApiRoute = require("./routes/api/messages")
 
-app.use("/api/posts", postsRoute)
-app.use("/api/users", usersRoute)
-app.use("/api/chats", chatsRoute)
+app.use("/api/posts", postsApiRoute)
+app.use("/api/users", usersApiRoute)
+app.use("/api/chats", chatsApiRoute)
+app.use("/api/messages", messagesApiRoute)
 
 
 // Render home-page //

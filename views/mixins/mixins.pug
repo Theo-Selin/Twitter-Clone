@@ -86,7 +86,6 @@ mixin createEditProfileModal(profileData, userLoggedIn)
                             input#username(type="text", name="username", placeholder="Username", value=profileData.username, required="")
                             input#email(type="email", name="email", placeholder="Email", value=profileData.email, required="")
                             textarea#aboutMe(type="text", maxlength="50" name="aboutMe", placeholder="About me (optional)", value=profileData.aboutMe)
-                            p#logoutWarning *Changing profile information forces you to relog
                     
                     script.
                         const form = document.getElementById("UpdateForm")
@@ -140,6 +139,19 @@ mixin createUnpinPostModal()
                 .modal-footer
                     button#closeModalButton.btn.btn-secondary(data-bs-dismiss="modal") Cancel
                     button#unpinPostButton.btn.btn-primary Unpin
+
+mixin createChatNameModal(chat)
+    #chatNameModal.modal.fade(tabindex="-1", aria-labelledby="chatNameModalLabel", aria-hidden="true")
+        .modal-dialog
+            .modal-content
+                .modal-header
+                    h5#chatNameModalLabel.modal-title Change the chat name
+                    button.btn-close(data-bs-dismiss="modal", aria-label="Close")
+                .modal-body
+                    input#chatNameTextbox(type="text", placeholder="Enter a name for the chat", value=chat.chatName)
+                .modal-footer
+                    button#closeModalButton.btn.btn-secondary(data-bs-dismiss="modal") Cancel
+                    button#chatNameButton.btn.btn-primary Save
 
 mixin createMessageImage(chatData, userLoggedIn)
     if(!chatData)

@@ -11,16 +11,17 @@ block content
         .messagePageContainer
             .messageTitleBarContainer
                 +createMessageImage(chat, userLoggedIn)
-                span#messageName This is the chat
+                span#chatName(data-bs-toggle="modal", data-bs-target="#chatNameModal") This is the chat
             
             .mainContentContainer
                 .messageContainer
                     .chatMessages
 
                     .footer
-                        textarea(name="messageInput", placeholder="Write a message") 
+                        textarea.chatTextbox(name="messageInput", placeholder="Write a message") 
                         button.sendMessageButton
                             i.fa-solid.fa-paper-plane
+        +createChatNameModal(chat)
 
 block scripts
-    script(src="/javascript/messagesPage.js") 
+    script(src="/javascript/chatPage.js") 
