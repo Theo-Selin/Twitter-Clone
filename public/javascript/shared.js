@@ -60,13 +60,14 @@ $("#commentModal").on("show.bs.modal", (event) => {
     })
 })
 
+// Triggers modal for deleting posts //
 $("#deletePostModal").on("show.bs.modal", (event) => {
     const button = $(event.relatedTarget)
     const postId = getIdFromElement(button)
     $("#deletePostButton").data("id", postId)
 })
 
-// Deletes post //
+// Deletes post with ajax call to database //
 $("#deletePostButton").click((event) => {
     const postId = $(event.target).data("id")
 

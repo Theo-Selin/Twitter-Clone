@@ -8,7 +8,6 @@ const fs = require("fs")
 const upload = multer({ dest: "uploads/" })
 const User = require("../../schemas/UserSchema")
 const Post = require("../../schemas/PostSchema")
-const { send } = require("express/lib/response")
 
 app.use(bodyParser.urlencoded({extended: false}))
 

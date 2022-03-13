@@ -15,6 +15,7 @@ router.get("/", (req, res, next) => {
     res.status(200).render("register")
 })
 
+// Checks if user exists and creates user //
 router.post("/", async (req, res, next) => {
 
     const firstName = req.body.firstName.trim()
@@ -40,9 +41,7 @@ router.post("/", async (req, res, next) => {
 
         if(user == null) {
             // No user found //
-
             const data = req.body
-
             data.password = await bcrypt.hash(password, 10)
             
             User.create(data)

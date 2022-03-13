@@ -52,10 +52,10 @@ const UserSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: "User"
     }],
-    aboutMe: [{
+    aboutMe: {
         type: String,
         required: false,
-    }]
+    }
 }, { timestamps: true })
 
 const User = mongoose.model("User", UserSchema)

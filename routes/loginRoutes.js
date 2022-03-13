@@ -15,6 +15,7 @@ router.get("/", (req, res, next) => {
     res.status(200).render("login")
 })
 
+// Compares Encrypted password with input and logs in //
 router.post("/", async (req, res, next) => {
 
     const payload = req.body
