@@ -1,3 +1,4 @@
+// Work in progress //
 $(document).ready(() => {
     $.get("/api/chats", (data, status, check) => {
         if(check.status == 400) {

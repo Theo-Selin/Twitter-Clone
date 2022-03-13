@@ -55,7 +55,7 @@ app.use("/api/chats", chatsApiRoute)
 app.use("/api/messages", messagesApiRoute)
 
 
-// Render home-page //
+// Render home page //
 app.get("/", middleware.requireLogin, (req, res, next) => {
 
     const payload = {

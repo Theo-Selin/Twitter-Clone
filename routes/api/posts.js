@@ -4,7 +4,6 @@ const router = express.Router()
 const bodyParser = require("body-parser")
 const User = require("../../schemas/UserSchema")
 const Post = require("../../schemas/PostSchema")
-const { send } = require("express/lib/response")
 
 app.use(bodyParser.urlencoded({extended: false}))
 
@@ -68,7 +67,7 @@ router.get("/:id", async (req, res, next) => {
 
 router.post("/", async (req, res, next) => {
     if(!req.body.content) {
-        console.log("message param not sent with request")
+        console.log("param not sent with request")
         return res.sendStatus(400)
     }
 
@@ -100,7 +99,7 @@ router.put("/:id/like", async (req, res, next) => {
 
     const isLiked = req.session.user.likes && req.session.user.likes.includes(postId)
 
-    // insert user like with conditional option
+    // Apply or remove like on post //
     const option = isLiked ? "$pull" : "$addToSet"
     req.session.user = await User.findByIdAndUpdate(userId, { [option]: { likes: postId } }, { new: true })
     .catch(error => {
@@ -108,8 +107,6 @@ router.put("/:id/like", async (req, res, next) => {
         res.sendStatus(400)
     })
 
-
-    // insert post like
     const post = await Post.findByIdAndUpdate(postId, { [option]: { likes: userId } }, { new: true })
     .catch(error => {
         console.log(error)
@@ -120,17 +117,15 @@ router.put("/:id/like", async (req, res, next) => {
 })
 
 router.post("/:id/share", async (req, res, next) => {
-    const postId = req.params.id
-    const userId = req.session.user._id
 
-    // Delete share //
+    // Delete share values in database //
+    const userId = req.session.user._id
+    const postId = req.params.id
     const deletedPost = await Post.findOneAndDelete({ postedBy: userId, shareData: postId })
     .catch(error => {
         console.log(error)
         res.sendStatus(400)
     })
-
-    const option = deletedPost != null ? "$pull" : "$addToSet"
 
     let repost = deletedPost
 
@@ -142,7 +137,8 @@ router.post("/:id/share", async (req, res, next) => {
         })
     }
 
-    // insert user like with conditional option
+    // insert user share with conditional option //
+    const option = deletedPost != null ? "$pull" : "$addToSet"
     req.session.user = await User.findByIdAndUpdate(userId, { [option]: { shares: repost._id } }, { new: true })
     .catch(error => {
         console.log(error)
@@ -150,7 +146,7 @@ router.post("/:id/share", async (req, res, next) => {
     })
 
 
-    // insert post like
+    // insert post share //
     const post = await Post.findByIdAndUpdate(postId, { [option]: { shareUsers: userId } }, { new: true })
     .catch(error => {
         console.log(error)

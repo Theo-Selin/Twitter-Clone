@@ -7,7 +7,7 @@ const User = require("../schemas/UserSchema")
 
 app.use(bodyParser.urlencoded({extended: false}))
 
-// Routing //
+// Logout by killing session //
 router.get("/", (req, res, next) => {
     
     if(req.session) {

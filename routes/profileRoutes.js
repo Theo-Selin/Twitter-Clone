@@ -5,7 +5,7 @@ const bodyParser = require("body-parser")
 const bcrypt = require("bcrypt")
 const User = require("../schemas/UserSchema")
 
-// Routing //
+// Render profile pages //
 router.get("/", (req, res, next) => {
 
     const payload = {
